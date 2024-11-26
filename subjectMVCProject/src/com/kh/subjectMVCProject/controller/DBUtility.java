@@ -20,15 +20,15 @@ public class DBUtility {
 		Properties pt = new Properties();
 		try {
 			pt.load(new FileReader(filePath));
-			}catch(Exception e) {
-				System.out.println(e.toString());
-			}
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
 		String id = pt.getProperty("id");
 		String pw = pt.getProperty("pw");
 		String url = pt.getProperty("url");
-		
+
 		// 2. jdbc driver load
-		// 3. DB connect
+		// 3. db connect
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			con = DriverManager.getConnection(url, id, pw);
@@ -40,8 +40,14 @@ public class DBUtility {
 		return con;
 	}
 
-	public static void dbClose(Connection con, Statement stmt, ResultSet rs) throws SQLException {
+	public static void dbClose(Connection con, Statement stmt, ResultSet rs) {
 		if (con != null) {
+			try {
+				con.close();
+
+			} catch (SQLException e) {
+				System.out.println(e.toString());
+			}
 		}
 		if (stmt != null) {
 			try {
@@ -81,30 +87,31 @@ public class DBUtility {
 		}
 
 	}
+
 	public static void dbClose(Connection con, Statement stmt, CallableStatement cstmt) {
-        if (con != null) {
-            try {
-                con.close();
+		if (con != null) {
+			try {
+				con.close();
 
-            } catch (SQLException e) {
-                System.out.println(e.toString());
-            }
-        }
-        if (stmt != null) {
-            try {
-                stmt.close();
+			} catch (SQLException e) {
+				System.out.println(e.toString());
+			}
+		}
+		if (stmt != null) {
+			try {
+				stmt.close();
 
-            } catch (SQLException e) {
-                System.out.println(e.toString());
-            }
-        }
-        if (cstmt != null) {
-            try {
-                cstmt.close();
+			} catch (SQLException e) {
+				System.out.println(e.toString());
+			}
+		}
+		if (cstmt != null) {
+			try {
+				cstmt.close();
 
-            } catch (SQLException e) {
-                System.out.println(e.toString());
-            }
-        }
-    }
+			} catch (SQLException e) {
+				System.out.println(e.toString());
+			}
+		}
+	}
 }

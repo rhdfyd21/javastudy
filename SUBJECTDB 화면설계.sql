@@ -90,11 +90,12 @@ Alter table trainee add constraint trainee_student_num_fk
     FOREIGN key(s_num) References student(num) on delete set null;
 Alter table trainee add constraint trainee_lesson_abbre_fk 
     FOREIGN key(abbre) References lesson(abbre) on delete set null;
-    
+
 create sequence trainee_seq 
 start with 1
 increment by 1;
 
+commit;
 drop table LESSON;
 --테스팅 
 select * from lesson;
