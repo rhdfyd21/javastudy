@@ -40,6 +40,8 @@ create table student(
     email varchar2(40) not null,  --이메일
     sdate date default sysdate    --등록일
 );
+--학생 검색
+SELECT NUM,NAME,EMAIL FROM STUDENT WHERE NAME = ?;
 Alter table student add constraint student_no_pk primary key(no); 
 Alter table student add constraint student_id_uk UNIQUE(id);
 Alter table student add constraint student_num_uk UNIQUE(num);
@@ -80,17 +82,25 @@ increment by 1;
 drop table trainee;
 create table trainee( 
     no number ,                     --pk seq
-    s_num varchar2(8) not null,     --student(fk) 학생번호
-    abbre varchar2(2) not null,     --lesson(fk) 과목요약
+    s_num varchar2(8) not null,     --student.num(fk) 학생번호
+    abbre varchar2(2) not null,     --lesson.abbre(fk) 과목요약
     section varchar2(20) not null,  --전공,부전공,교양
-    registdate date default sysdate      --수강신청일
+    regdate date default sysdate      --수강신청일
 );
+select T.no, T.section, T.regdate, S.num, S.name, L.abbre, L.name as abbreName from trainee T 
+inner join student S on T.s_num = S.num
+inner join lesson L on T.abbre = L.abbre  
+order by T.no;
+
 Alter table trainee add constraint trainee_no_pk primary key(no);
 Alter table trainee add constraint trainee_student_num_fk 
     FOREIGN key(s_num) References student(num) on delete set null;
 Alter table trainee add constraint trainee_lesson_abbre_fk 
     FOREIGN key(abbre) References lesson(abbre) on delete set null;
-
+    
+    --테스팅
+    update trainee set s_num = '', abbre = '', section = '' where no = 10;
+    insert into trainee values(trainee_seq.NEXTVAR,'','','',sysdate);
 create sequence trainee_seq 
 start with 1
 increment by 1;

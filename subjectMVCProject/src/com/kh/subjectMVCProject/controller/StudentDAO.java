@@ -14,6 +14,7 @@ import com.kh.subjectMVCProject.model.StudentVO;
 public class StudentDAO {
 
 	public static final String STUDENT_SELECT = "SELECT * FROM STUDENT";
+	public static final String STUDENT_SELECT_SEARCH = "SELECT NUM,NAME,EMAIL FROM STUDENT WHERE NAME = ?";
 	public static final String STUDENT_INSERT = "INSERT INTO STUDENT(NO, NAME, KOR, ENG, MAT) VALUES(STUDENT_NO_SEQ.NEXTVAL, ?, ?, ?, ?)";
 	public static final String STUDENT_CALL_RANK_PROC = "{call STUDENT_RANK_PROC()}";
 	public static final String STUDENT_UPDATE = "UPDATE STUDENT SET NAME = ?, KOR = ?, ENG = ?, MAT = ? WHERE NO = ?";
@@ -50,6 +51,35 @@ public class StudentDAO {
 			studentList = null;
 		}
 		DBUtility.dbClose(con, stmt, rs);
+		return studentList;
+	}
+	public static ArrayList<StudentVO> studentNameSelect(String nameValue) throws SQLException {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<StudentVO> studentList = new ArrayList<StudentVO>();
+		
+		con = DBUtility.dbCon();
+		pstmt = con.prepareStatement(STUDENT_SELECT_SEARCH);
+		pstmt.setString(1,nameValue);
+		rs = pstmt.executeQuery();
+		
+		if (rs.next()) {
+			do {
+				String num = rs.getString("NUM");
+				String name = rs.getString("NAME");
+				String email = rs.getString("EAMIL");
+				
+				StudentVO stu = new StudentVO();
+				stu.setNum(num);
+				stu.setName(name);
+				stu.setEmail(email);
+				studentList.add(stu);
+			} while (rs.next());
+		} else {
+			studentList = null;
+		}
+		DBUtility.dbClose(con, pstmt, rs);
 		return studentList;
 	}
 

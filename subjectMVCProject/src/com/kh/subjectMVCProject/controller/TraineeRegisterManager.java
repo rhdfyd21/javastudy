@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.kh.subjectMVCProject.model.StudentVO;
+import com.kh.subjectMVCProject.model.TraineeVO;
 
 
 public class TraineeRegisterManager {
@@ -12,34 +13,69 @@ public class TraineeRegisterManager {
 
 	// 전체 학생 리스트를 출력 요청
 	public void totalSelectManger() throws SQLException {
-		ArrayList<StudentVO> studentList = new ArrayList<StudentVO>();
-		studentList = StudentDAO.studentSelect();
+		TraineeDAO tdao = new TraineeDAO();
+		ArrayList<TraineeVO> traineeList = new ArrayList<TraineeVO>();
+		traineeList = tdao.traineeAllSelect(new TraineeVO());
+		if(traineeList.size() <= 0) {
+			System.out.println("데이터가 존재하지 않습니다.");
+			return;
+		}
 
-		printStudentList(studentList);
+		printTraineeList(traineeList);
+	}
+	public static void SelectManager(){
+		TraineeDAO tdao = new TraineeDAO();
+		ArrayList<TraineeVO> traineeList = new ArrayList<TraineeVO>();
+		traineeList = tdao.traineeSelect(new TraineeVO());
+		if(traineeList.size() <= 0) {
+			System.out.println("데이터가 존재하지 않습니다.");
+		}
+		
+		printTraineeList(traineeList);
 	}
 
 	// 전체 학생리스트를 출력 진행
-	public static void printStudentList(ArrayList<StudentVO> studentList) {
+	public static void printTraineeList(ArrayList<TraineeVO> traineeList) {
 		System.out.println("============================================");
-		for (StudentVO sv : studentList) {
-			System.out.println(sv.toString());
+		for (TraineeVO tvo : traineeList) {
+			System.out.println(tvo.toString());
+		}
+		System.out.println("============================================");
+	}
+	public static void printTraineeAllList(ArrayList<TraineeVO> traineeList) {
+		System.out.println("============================================");
+		for (TraineeVO tvo : traineeList) {
+			System.out.println(tvo.toAllString());
 		}
 		System.out.println("============================================");
 	}
 
 	public static void insertManager() throws SQLException {
-		System.out.print("학생 이름을 입력하세요: ");
+		TraineeDAO tdao =new TraineeDAO();
+		//Trainee 테이블 전체내용을 보여준다
+		
+		System.out.print("학생 이름 입력 : " );
 		String name = sc.nextLine();
-		System.out.print("국어 점수를 입력하세요: ");
-		int kor = Integer.parseInt(sc.nextLine());
-		System.out.print("영어 점수를 입력하세요: ");
-		int eng = Integer.parseInt(sc.nextLine());
-		System.out.print("수학 점수를 입력하세요: ");
-		int mat = Integer.parseInt(sc.nextLine());
+		//검색된 이름으로 학번,이름,이메일 출력 통해서 학번입력 처리
+		StudentRegisterManager srm = new StudentRegisterManager();
+		srm.selectNameSearchManager();
+		
+		System.out.print("학생 번호등록(학생이름입력): ");
+		String s_num = sc.nextLine();
+		//검색기능 추가
+		
+		// lesson abbreviation 보여준다. 과목명요약, 과목명
+		LessonRegisterManager lrm = new LessonRegisterManager();
+		lrm.selectSortManager();
+		System.out.print("과목 요약 입력 : ");
+		String abbre = (sc.nextLine()).trim();
+		
+		System.out.print("전공,부전공,교양입력 : ");
+		String section = (sc.nextLine()).trim();
 
-		StudentVO studentVO = new StudentVO();
-		boolean successFlag = StudentDAO.studentInsert(studentVO);
-
+		TraineeVO traineeVO = new TraineeVO(0, s_num, abbre, section, null);
+		boolean successFlag = tdao.traineeInsert(traineeVO);
+		
 		if (successFlag == true) {
 			System.out.println("입력처리 성공");
 		} else {
@@ -50,21 +86,31 @@ public class TraineeRegisterManager {
 
 	// 수정
 	public static void updateManager() throws SQLException {
-
+		TraineeDAO tdao =new TraineeDAO();
+		
+		//trainee 테이블 전체내용을 보여준다.
+		SelectManager();
 		System.out.print("수정할 학생의 번호를 입력하세요: ");
 		int no = Integer.parseInt(sc.nextLine());
+		StudentRegisterManager srm = new StudentRegisterManager();
+		srm.selectNameSearchManager();
+		
+		System.out.print("학생 번호등록(학생이름입력): ");
+		String s_num = sc.nextLine();
+		//검색기능 추가
+		
+		// lesson abbreviation 보여준다. 과목명요약, 과목명
+		LessonRegisterManager lrm = new LessonRegisterManager();
+		lrm.selectSortManager();
+		System.out.print("과목 요약 입력 : ");
+		String abbre = (sc.nextLine()).trim();
+		
+		System.out.print("전공,부전공,교양입력 : ");
+		String section = (sc.nextLine()).trim();
 
-		System.out.print("새로운 이름을 입력하세요: ");
-		String name = sc.nextLine();
-		System.out.print("새로운 국어 점수를 입력하세요: ");
-		int kor = Integer.parseInt(sc.nextLine());
-		System.out.print("새로운 영어 점수를 입력하세요: ");
-		int eng = Integer.parseInt(sc.nextLine());
-		System.out.print("새로운 수학 점수를 입력하세요: ");
-		int mat = Integer.parseInt(sc.nextLine());
-
-		StudentVO svo = new StudentVO();
-		boolean successFlag = StudentDAO.studentUpdate(svo);
+		TraineeVO traineeVO = new TraineeVO(0, s_num, abbre, section, null);
+		boolean successFlag = tdao.traineeInsert(traineeVO);
+		
 
 		if (successFlag == true) {
 			System.out.println("수정처리 성공");
@@ -75,13 +121,13 @@ public class TraineeRegisterManager {
 	}
 
 	// 삭제
-	public static void deleteManager() throws SQLException {
-
-		System.out.print("삭제할 학생 번호를 입력하세요: ");
+	public static void deleteManager()  {
+		TraineeVO tvo = new TraineeVO();
+		TraineeDAO tdao = new TraineeDAO();
+		System.out.print("삭제할 수강신청 번호를 입력하세요: ");
 		int no = Integer.parseInt(sc.nextLine());
-		StudentVO svo = new StudentVO();
-		svo.setNo(no);
-		boolean successFlag = StudentDAO.studentDelete(svo);
+		tvo.setNo(no);
+		boolean successFlag = tdao.traineeDelete(tvo);
 
 		if (successFlag == true) {
 			System.out.println("삭제처리 성공");
@@ -91,11 +137,16 @@ public class TraineeRegisterManager {
 	}
 
 	// 정렬
-	public static void sortManager() throws SQLException {
+	public static void sortManager(){
 		// rank 순서대로 정렬
-		ArrayList<StudentVO> studentList = null;
-		studentList = StudentDAO.studentSort();
-		printStudentList(studentList);
-		System.out.println("정렬된 학생 정보");
+		TraineeDAO tdao = new TraineeDAO();
+		ArrayList<TraineeVO> traineeList = null;
+		traineeList = tdao.traineeSelectSort(new TraineeVO());
+		traineeList = tdao.traineeSelect(new TraineeVO());
+		if(traineeList.size() <= 0) {
+			System.out.println("데이터가 존재하지 않습니다.");
+		}
+		
+		printTraineeList(traineeList);
 	}
 }
