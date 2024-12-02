@@ -41,7 +41,7 @@ public class SubjectVO {
 	}
 	@Override
 	public String toString() {
-		return "SubjectVO [no=" + no + ", num=" + num + ", name=" + name + "]";
+		return "[번호 = " + no + ", 학과 번호 = " + num + ", 학과 이름 =" + name + "]";
 	}
 
 	

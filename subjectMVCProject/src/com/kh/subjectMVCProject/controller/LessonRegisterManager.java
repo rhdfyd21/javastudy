@@ -44,24 +44,25 @@ public class LessonRegisterManager {
 	} 
 	//과목삭제(delete)
 	public void deleteManager() {
-		LessonDAO ldao = new LessonDAO(); 
+		LessonDAO ldao = new LessonDAO();
 		LessonVO lvo = new LessonVO();
-		//전체리스트를 보여준다
+
+		//전체리스트를 보여준다.
 		ArrayList<LessonVO> lessonList = ldao.lessonSelect(lvo); 
-		//화면출력
 		if(lessonList.size() != 0) {
 			printLessonList(lessonList); 
 		}else {
 			System.out.println("출력할 데이터가 없습니다.");
-			return;
+			return; 
 		}
 		//화면으로부터 입력받는다. 
 		System.out.print("삭제할번호>>");
 		int no = Integer.parseInt((sc.nextLine()).trim());
-		
-		lvo = new LessonVO();
-		lvo.setNo(no);
-		boolean successFlag = ldao.lessonDelete(lvo); 
+		System.out.println("no="+no);
+		LessonVO lvo2 = new LessonVO(); 
+		lvo2.setNo(no);
+		System.out.println("lvo2="+lvo2.toString());
+		boolean successFlag = ldao.lessonDelete(lvo2); 
 		
 		//화면출력
 		if(successFlag == true) {

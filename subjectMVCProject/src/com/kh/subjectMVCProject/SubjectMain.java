@@ -3,8 +3,6 @@ package com.kh.subjectMVCProject;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-import javax.security.auth.Subject;
-
 import com.kh.subjectMVCProject.controller.LessonRegisterManager;
 import com.kh.subjectMVCProject.controller.StudentRegisterManager;
 import com.kh.subjectMVCProject.controller.SubjectRegisterManager;
@@ -48,7 +46,7 @@ public class SubjectMain {
 			} catch (Exception e) {
 				System.out.println("\n입력에 오류가 있습니다.\n프로그램을 다시 시작하세요.");
 			}
-		}//end of file 
+		}//end of file
 	}
 	//수강신청정보
 	private static void traineeMenu() throws SQLException {
@@ -68,11 +66,15 @@ public class SubjectMain {
 			break;
 		case TRAINEE_CHOICE.LIST:
 			System.out.println("");
-			trm.insertManager();
+			trm.selectManager();
 			break;
 		case TRAINEE_CHOICE.DELETE:
 			System.out.println("");
 			trm.deleteManager();
+			break;
+		case TRAINEE_CHOICE.JOIN_LIST:
+			System.out.println("");
+			trm.totalSelectManager();
 			break;
 		case TRAINEE_CHOICE.MAIN:
 			return;
@@ -82,7 +84,7 @@ public class SubjectMain {
 		
 	}
 	//과목정보
-	private static void lessonMenu() throws SQLException {
+	private static void lessonMenu() {
 		int no;
 		LessonRegisterManager lrm = new LessonRegisterManager();   
 
@@ -130,7 +132,7 @@ public class SubjectMain {
 			break;
 		case SUBJECT_CHOICE.UPDATE:
 			System.out.println("");
-//			studnetManager.studnetUpdate();
+			srm.updateManager();
 			break;
 		case SUBJECT_CHOICE.LIST:
 			System.out.println("");
@@ -138,7 +140,11 @@ public class SubjectMain {
 			break;
 		case SUBJECT_CHOICE.DELETE:
 			System.out.println("");
-//			studnetManager.studnetTotalList();
+			srm.deleteManager();
+			break;
+		case SUBJECT_CHOICE.SORT:
+			System.out.println("");
+			srm.sortManager();
 			break;
 		case SUBJECT_CHOICE.MAIN:
 			return;
@@ -147,7 +153,7 @@ public class SubjectMain {
 		}
 	}
 	//학생정보
-	private static void studentMenu() {
+	private static void studentMenu() throws SQLException {
 		int no;
 		StudentRegisterManager srm = new StudentRegisterManager(); 
 
@@ -156,19 +162,23 @@ public class SubjectMain {
 		switch (no) {
 		case STUDENT_CHOICE.INSERT:
 			System.out.println("");
-		//	srm.insertManager();
+			srm.insertManager();
 			break;
 		case STUDENT_CHOICE.UPDATE:
 			System.out.println("");
-//			studnetManager.studnetUpdate();
+			srm.updateManager();
 			break;
 		case STUDENT_CHOICE.LIST:
 			System.out.println("");
-//			studnetManager.studnetTotalList();
+			srm.selectManager();
 			break;
 		case STUDENT_CHOICE.DELETE:
 			System.out.println("");
-//			studnetManager.studnetTotalList();
+			srm.deleteManager();
+			break;
+		case STUDENT_CHOICE.LIST_ALL:
+			System.out.println("");
+			srm.selectAllManager();
 			break;
 		case STUDENT_CHOICE.MAIN:
 			return;

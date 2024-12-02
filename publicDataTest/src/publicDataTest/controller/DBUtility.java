@@ -1,4 +1,4 @@
-package com.kh.subjectMVCProject.controller;
+package publicDataTest.controller;
 
 import java.io.FileReader;
 import java.sql.CallableStatement;
@@ -10,12 +10,12 @@ import java.sql.Statement;
 import java.util.Properties;
 
 public class DBUtility {
+	public static Connection dbCon() {
 
-	public static Connection dbCon()  {
 		Connection con = null;
-		// 1. db.properties file( id, pw, url setting)
-		String filePath = "C:\\KHJAVA2\\JavaTest\\javaStudy\\subjectMVCProject\\src\\db.properties";
-		Properties pt = new Properties(); 
+		//1.db.properties file 에서 id,pw,url 가져오기
+		String filePath = "C:\\KH자바\\JavaTest\\javaStudy\\publicDataTest\\src\\publicDataTest\\model\\db.properties";
+		Properties pt = new Properties();
 		try {
 			pt.load(new FileReader(filePath));
 		} catch (Exception e) {
@@ -24,9 +24,9 @@ public class DBUtility {
 		String id = pt.getProperty("id");
 		String pw = pt.getProperty("pw");
 		String url = pt.getProperty("url");
-		
-		// 2. jdbc driver load 
-		// 3. db connect 
+
+		// 2. jdbc driver load
+		// 3. db connect
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			con = DriverManager.getConnection(url, id, pw);
@@ -37,7 +37,7 @@ public class DBUtility {
 		}
 		return con;
 	}
-	//오버로딩 
+
 	public static void dbClose(Connection con, Statement stmt, ResultSet rs) {
 		if (con != null) {
 			try {

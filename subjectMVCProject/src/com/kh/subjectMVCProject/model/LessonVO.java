@@ -42,7 +42,7 @@ public class LessonVO {
 	}
 	@Override
 	public String toString() {
-		return "LessonVO [no=" + no + ", abbre=" + abbre + ", name=" + name + "]";
+		return ".[번호 = " + no + ", abbre=" + abbre + ", 이름 =" + name + "]";
 	}
 	
 	

@@ -30,6 +30,15 @@ public class StudentVO {
 		this.email = email;
 		this.sdate = sdate;
 	}
+	
+	public StudentVO(int no,String passwd, String birthday, String address, String email) {
+		super();
+		this.no = no;
+		this.passwd = passwd;
+		this.birthday = birthday;
+		this.address = address;
+		this.email = email;
+	}
 	public int getNo() {
 		return no;
 	}
@@ -98,9 +107,9 @@ public class StudentVO {
 	}
 	@Override
 	public String toString() {
-		return "StudentVO [no=" + no + ", num=" + num + ", name=" + name + ", id=" + id + ", passwd=" + passwd
-				+ ", s_num=" + s_num + ", birthday=" + birthday + ", phone=" + phone + ", address=" + address
-				+ ", email=" + email + ", sdate=" + sdate + "]";
+		return "[번호 = " + no + ", 학번 =" + num + ", 이름 =" + name + ", id =" + id + ", passwd =" + passwd
+				+ ", 학과 번호 =" + s_num + ", 생일 =" + birthday + ", 전화번호 =" + phone + ", 주소 =" + address
+				+ ", email =" + email + ", 가입 날짜 =" + sdate + "]";
 	}
 	 
 	 
